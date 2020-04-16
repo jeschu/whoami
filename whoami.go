@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/prometheus/common/log"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/url"
 	"os"
