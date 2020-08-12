@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -29,8 +30,15 @@ func main() {
 			query = "?" + query
 		}
 		lines = append(lines, fmt.Sprintf("%s %s%s %s (remoteAddr=%s)", r.Method, path, query, r.Proto, r.RemoteAddr))
-		for h, vs := range r.Header {
-			lines = append(lines, fmt.Sprintf("%s: %v", h, strings.Join(vs, ", ")))
+
+		headers := make([]string, 0, len(r.Header))
+		for header, _ := range r.Header {
+			headers = append(headers, header)
+		}
+
+		sort.Strings(headers)
+		for _, header := range headers {
+			lines = append(lines, fmt.Sprintf("%s: %v", header, strings.Join(r.Header[header], ", ")))
 		}
 		lines = append(lines, "")
 		if body, err := ioutil.ReadAll(r.Body); err == nil {

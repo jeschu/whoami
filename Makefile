@@ -2,6 +2,7 @@ default: build-whoami-local
 
 clean:
 	rm -rfv target
+
 build-whoami-local:
 	go build -a -v -o target/whoami
 
@@ -12,7 +13,7 @@ build-docker: build-whoami
 	docker build -t jeschu/whoami:latest .
 
 run-docker: build-docker
-	docker run -it --rm jeschu/whoami:latest
+	docker run -it --rm -p 8888:80 jeschu/whoami:latest
 
 push-docker: build-docker
 	docker push jeschu/whoami:latest
